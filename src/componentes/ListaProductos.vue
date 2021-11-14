@@ -1,15 +1,8 @@
 <template>
   <section class="src-componentes-lista-productos">
     <div class="jumbotron">
-      <h2>Lista de productos en stock</h2>
+      <h2>Lista de precios</h2>
       <hr />
-      <br />
-      <button class="btn btn-danger mr-3" @click="getProductos()">
-        VER LISTA DE PRODUCTOS
-      </button>
-
-      <br />
-      <br />
       <br />
       <div class="table-responsive">
         <table class="table table-dark">
@@ -17,7 +10,7 @@
             <th>Nombre del producto</th>
             <th>Precio unitario</th>
           </tr>
-          <tr v-for="(producto, index) in $store.state.productos" :key="index">
+          <tr v-for="(producto, index) in productos" :key="index">
             <td>{{ producto.nombre }}</td>
             <td>$ {{ producto.precio }}</td>
           </tr>
@@ -32,7 +25,9 @@
 export default {
   name: "src-componentes-lista-productos",
   props: [],
-  mounted() {},
+  mounted() {
+    this.getProductos();
+  },
   data() {
     return {
        urlProductos: "https://617498b308834f0017c709b5.mockapi.io/productos/",
@@ -40,16 +35,16 @@ export default {
     };
   },
   methods: {
-    getProductos() {
-      this.$store.dispatch('getProductos')
-      // try {
-      //   let respuesta = await this.axios(this.urlProductos);
-      //   let productos = respuesta.data;
-      //   console.log("Se obtuvieron los productos correctamente.", productos);
-      //   this.productos = productos;
-      // } catch (error) {
-      //   console.error("Ocurrió un error y no se pudieron obtener los productos.", error);
-      // }
+    async getProductos() {
+     // this.$store.dispatch('getProductos')
+      try {
+        let respuesta = await this.axios(this.urlProductos);
+        let productos = respuesta.data;
+        console.log("Se obtuvieron los productos correctamente.", productos);
+        this.productos = productos;
+      } catch (error) {
+        console.error("Ocurrió un error y no se pudieron obtener los productos.", error);
+      }
     },
   },
   computed: {},

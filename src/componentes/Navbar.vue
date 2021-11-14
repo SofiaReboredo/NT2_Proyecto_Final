@@ -23,7 +23,7 @@
           <li class="nav-item">
             <router-link to="/listaProductos">
               <a class="nav-link" href="#" style="color: white"
-                >Lista de productos</a
+                >Lista de precios</a
               >
             </router-link>
           </li>

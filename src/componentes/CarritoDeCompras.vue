@@ -5,79 +5,64 @@
       <hr />
       <br />
 
-      <vue-form :state="formState" @submit.prevent="agregarProductoAlCarrito()">
-        <validate tag="div">
-          <label for="nombre">Nombre del producto</label>
-          <input
-            style="width: 500px"
-            placeholder="Ingrese el producto"
-            type="text"
-            id="nombre"
-            v-model.trim="formData.nombre"
-            name="nombre"
-            class="form-control"
-            autocomplete="off"
-            required
-            no-espacios
-          />
-
-          <field-messages name="nombre" show="$dirty"> </field-messages>
-        </validate>
-
-        <validate tag="div">
-          <label for="precio">Precio unitario</label>
-          <input
-            style="width: 100px"
-            type="number"
-            id="precio"
-            v-model.number="formData.precio"
-            name="precio"
-            class="form-control"
-            autocomplete="off"
-            required
-          />
-
-          <field-messages name="precio" show="$dirty"> </field-messages>
-        </validate>
-
-        <validate tag="div">
-          <label for="cantidad">Cantidad</label>
-          <input
-            style="width: 100px"
-            type="number"
-            id="cantidad"
-            v-model.number="formData.cantidad"
-            name="cantidad"
-            class="form-control"
-            autocomplete="off"
-            required
-          />
-
-          <field-messages name="cantidad" show="$dirty"> </field-messages>
-        </validate>
-        <br />
-
-        <button
-          class="btn btn-success my-3"
-          :disabled="formState.$invalid"
-          type="submit"
+      <div class="d-flex align-content-around flex-wrap">
+        <div
+          class="
+            media
+            alert alert-success
+            col-4 col-sm-4 col-md-3 col-lg-2
+            mb-3 mb-3
+          "
+          v-for="(producto, index) in productos"
+          :key="index"
         >
-          Agregar
-        </button>
-      </vue-form>
-
+          <div class="media-body ml-3">
+            <h4>
+              <p>{{ producto.nombre }}</p>
+            </h4>
+            <br />
+            <p>
+              Precio: $<i>{{ producto.precio }}</i>
+            </p>
+            Cantidad
+            <input
+              style="width: 70px"
+              type="number"
+              id="cantidad"
+              v-model.number="producto.cantidad"
+              name="cantidad"
+              class="form-control"
+              autocomplete="off"
+              required
+            />
+            <div>
+              <br />
+              <button
+                class="btn btn-secondary ml-3"
+                @click="agregarProductoAlCarrito(index)"
+              >
+                Comprar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
       <div class="table-responsive">
         <table class="table table-dark">
           <tr>
+            <th>Id producto</th>
             <th>Producto</th>
             <th>Precio unitario</th>
             <th>Cantidad</th>
             <th></th>
           </tr>
           <tr v-for="(producto, index) in carrito" :key="index">
+            <td>{{ producto.idProducto }}</td>
             <td>{{ producto.nombre }}</td>
             <td>{{ producto.precio }}</td>
-            <td>{{ producto.cantidad }}</td>
+            <td>{{ formData.cantidad }}</td>
             <td>
               <button
                 class="btn btn-danger mr-3"
@@ -102,6 +87,7 @@ export default {
   name: "src-componentes-carrito-de-compras",
   props: [],
   mounted() {
+    this.getProductos();
     this.pedirDatosAlServidor();
   },
   data() {
@@ -110,6 +96,8 @@ export default {
       formState: {},
       urlCarrito: "https://617498b308834f0017c709b5.mockapi.io/Carrito/",
       carrito: [],
+      urlProductos: "https://617498b308834f0017c709b5.mockapi.io/productos/",
+      productos: [],
     };
   },
   methods: {
@@ -118,6 +106,7 @@ export default {
         nombre: "",
         precio: "",
         cantidad: 0,
+        id: "",
       };
     },
 
@@ -148,16 +137,17 @@ export default {
     },
 
     agregarProductoAlCarrito() {
-      let carrito = {
-        nombre: this.formData.nombre,
-        precio: this.formData.precio,
+      
+        let carrito = {
+        id: this.productos.idProducto,
+        nombre: this.productos.nombre,
+        precio: this.productos.precio,
         cantidad: this.formData.cantidad,
-      };
+      }
       console.log(carrito);
       this.enviarDatosAlServidor(carrito);
 
       this.formData = this.getInicialData();
-      this.formState._reset();
     },
 
     async obtenerProductosDelCarrito() {
@@ -190,6 +180,21 @@ export default {
         console.error("Error al eliminar el producto.", error);
       }
     },
+
+    async getProductos() {
+      // this.$store.dispatch('getProductos')
+      try {
+        let respuesta = await this.axios(this.urlProductos);
+        let productos = respuesta.data;
+        console.log("Se obtuvieron los productos correctamente.", productos);
+        this.productos = productos;
+      } catch (error) {
+        console.error(
+          "Ocurrió un error y no se pudieron obtener los productos.",
+          error
+        );
+      }
+    },
   },
   computed: {},
 };
@@ -214,6 +219,10 @@ td,
 tr {
   background-color: rgba(211, 193, 197, 0.979);
   border: 1px solid rgba(206, 34, 77, 0.979);
+  color: white;
+}
+.media {
+  background-color: rgba(226, 139, 161, 0.979);
   color: white;
 }
 </style>
