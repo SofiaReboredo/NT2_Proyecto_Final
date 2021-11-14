@@ -1,28 +1,43 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="jumbotron">
+      <h1><img src="./assets/banner.png" alt="Tienda ya banner" /></h1>
+      <hr />
+      <br />
+      <Navbar />
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Navbar from "./componentes/Navbar.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Navbar,
+  },
+};
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  
+}
+.jumbotron {
+  
+  background-color: rgba(190, 167, 188, 0.979);
+  color: rgb(173, 54, 137);
+}
+hr {
+  background-color: rgb(154, 132, 158, 0.781);
+}
+img {
+  
+  width: 500px;
+}
+h1{
+  background-color: rgba(206, 34, 77, 0.979);
 }
 </style>
