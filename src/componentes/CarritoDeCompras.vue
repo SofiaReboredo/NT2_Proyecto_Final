@@ -24,17 +24,22 @@
             <p>
               Precio: $<i>{{ producto.precio }}</i>
             </p>
-            Cantidad
-            <input
-              style="width: 70px"
-              type="number"
-              id="cantidad"
-              v-model.number="producto.cantidad"
-              name="cantidad"
-              class="form-control"
-              autocomplete="off"
-              required
-            />
+
+            <vue-form :state="formState">
+              <validate tag="div">
+                Cantidad
+                <input
+                  style="width: 70px"
+                  type="number"
+                  id="cantidad"
+                  v-model.number="producto.cantidad"
+                  name="cantidad"
+                  class="form-control"
+                  autocomplete="off"
+                  required
+                />
+              </validate>
+            </vue-form>
             <div>
               <br />
               <button
@@ -52,17 +57,15 @@
       <div class="table-responsive">
         <table class="table table-dark">
           <tr>
-            <th>Id producto</th>
             <th>Producto</th>
             <th>Precio unitario</th>
             <th>Cantidad</th>
             <th></th>
           </tr>
           <tr v-for="(producto, index) in carrito" :key="index">
-            <td>{{ producto.idProducto }}</td>
             <td>{{ producto.nombre }}</td>
             <td>{{ producto.precio }}</td>
-            <td>{{ formData.cantidad }}</td>
+            <td>{{ producto.cantidad }}</td>
             <td>
               <button
                 class="btn btn-danger mr-3"
@@ -106,7 +109,6 @@ export default {
         nombre: "",
         precio: "",
         cantidad: 0,
-        id: "",
       };
     },
 
@@ -136,14 +138,12 @@ export default {
       }
     },
 
-    agregarProductoAlCarrito() {
-      
-        let carrito = {
-        id: this.productos.idProducto,
-        nombre: this.productos.nombre,
-        precio: this.productos.precio,
-        cantidad: this.formData.cantidad,
-      }
+    agregarProductoAlCarrito(index) {
+      let carrito = {
+        nombre: this.productos[index].nombre,
+        precio: this.productos[index].precio,
+        cantidad: this.cantidad[index],
+      };
       console.log(carrito);
       this.enviarDatosAlServidor(carrito);
 
