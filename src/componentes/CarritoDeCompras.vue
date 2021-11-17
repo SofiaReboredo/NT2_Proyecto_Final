@@ -1,10 +1,11 @@
 <template>
   <section class="src-componentes-carrito-de-compras">
     <div class="jumbotron">
+      
       <h2>¡Agregá lo que quieras!</h2>
       <hr />
       <br />
-
+        
       <div class="d-flex align-content-around flex-wrap">
         <div
           class="
@@ -32,7 +33,7 @@
                   style="width: 70px"
                   type="number"
                   id="cantidad"
-                  v-model.number="producto.cantidad"
+                  v-model.number="formData.cantidad"
                   name="cantidad"
                   class="form-control"
                   autocomplete="off"
@@ -44,6 +45,7 @@
               <br />
               <button
                 class="btn btn-secondary ml-3"
+                :disabled="formState.$invalid"
                 @click="agregarProductoAlCarrito(index)"
               >
                 Comprar
@@ -60,12 +62,14 @@
             <th>Producto</th>
             <th>Precio unitario</th>
             <th>Cantidad</th>
+            <th>Importe</th>
             <th></th>
           </tr>
           <tr v-for="(producto, index) in carrito" :key="index">
             <td>{{ producto.nombre }}</td>
             <td>{{ producto.precio }}</td>
             <td>{{ producto.cantidad }}</td>
+            <td>$ {{ parseFloat(producto.importe).toFixed(2) }}</td>
             <td>
               <button
                 class="btn btn-danger mr-3"
@@ -74,6 +78,12 @@
                 ELIMINAR
               </button>
             </td>
+          </tr>
+        </table>
+        <table class="table table-dark">
+          <tr>
+            <th>Compra total</th>
+            <th>$ {{ parseFloat(compraTotal).toFixed(2) }}</th>
           </tr>
         </table>
       </div>
@@ -101,6 +111,7 @@ export default {
       carrito: [],
       urlProductos: "https://617498b308834f0017c709b5.mockapi.io/productos/",
       productos: [],
+      compraTotal: 0,
     };
   },
   methods: {
@@ -109,7 +120,15 @@ export default {
         nombre: "",
         precio: "",
         cantidad: 0,
+        importe: "",
       };
+    },
+
+    getTotalCompra() {
+      let total = 0;
+      this.carrito.forEach((producto) => {
+        return (total += (producto.importe));
+      });
     },
 
     async enviarDatosAlServidor(carrito) {
@@ -142,12 +161,16 @@ export default {
       let carrito = {
         nombre: this.productos[index].nombre,
         precio: this.productos[index].precio,
-        cantidad: this.cantidad[index],
+        importe: this.productos[index].precio * this.formData.cantidad,
+        cantidad: this.formData.cantidad,
       };
+      this.compraTotal = this.getTotalCompra();
+      console.log(this.compraTotal)
       console.log(carrito);
       this.enviarDatosAlServidor(carrito);
 
       this.formData = this.getInicialData();
+      this.formState._reset();
     },
 
     async obtenerProductosDelCarrito() {
@@ -186,7 +209,6 @@ export default {
       try {
         let respuesta = await this.axios(this.urlProductos);
         let productos = respuesta.data;
-        console.log("Se obtuvieron los productos correctamente.", productos);
         this.productos = productos;
       } catch (error) {
         console.error(
@@ -224,5 +246,9 @@ tr {
 .media {
   background-color: rgba(226, 139, 161, 0.979);
   color: white;
+}
+.btn {
+  background-color: rgba(206, 34, 77, 0.979);
+  border: white;
 }
 </style>

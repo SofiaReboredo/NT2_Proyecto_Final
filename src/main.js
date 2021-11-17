@@ -10,6 +10,7 @@ import './form'
 import {router} from './router'
 import './httpClient'
 import store from './store'
+import './mixin'
 
 Vue.config.productionTip = false
 

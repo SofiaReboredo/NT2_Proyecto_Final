@@ -21,6 +21,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <div class="navbar-nav">
           <li class="nav-item">
+            <router-link to="/registro">
+              <a class="nav-link" href="#" style="color: white"
+                >Registro de usuario</a
+              >
+            </router-link>
+          </li>
+          <li class="nav-item">
             <router-link to="/listaProductos">
               <a class="nav-link" href="#" style="color: white"
                 >Lista de precios</a
@@ -33,14 +40,6 @@
               <a class="nav-link" href="#" style="color: white"
                 >Carrito de compras</a
               >
-            </router-link>
-          </li>
-
-          <li class="nav-item">
-            <router-link to="/seguimientoPedido">
-              <a class="nav-link" href="#" style="color: white"
-                >¡Seguí tu pedido!
-              </a>
             </router-link>
           </li>
         </div>
