@@ -1,7 +1,7 @@
 <template>
   <section class="src-componentes-lista-productos">
     <div class="jumbotron">
-      <h2>Lista de precios</h2>
+      <h2>Lista de {{'precios' | pasarAMayuscula}}</h2>
       <hr />
       <br />
       <button class="btn btn-warning my-3" @click="mostrar = !mostrar">
@@ -57,7 +57,9 @@ export default {
       // }
     },
   },
-  computed: {},
+  computed: {
+  
+  },
 };
 </script>
 

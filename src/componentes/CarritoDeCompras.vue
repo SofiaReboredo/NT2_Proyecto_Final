@@ -1,11 +1,10 @@
 <template>
   <section class="src-componentes-carrito-de-compras">
     <div class="jumbotron">
-      
       <h2>¡Agregá lo que quieras!</h2>
       <hr />
       <br />
-        
+
       <div class="d-flex align-content-around flex-wrap">
         <div
           class="
@@ -37,7 +36,6 @@
                   name="cantidad"
                   class="form-control"
                   autocomplete="off"
-                  required
                 />
               </validate>
             </vue-form>
@@ -80,13 +78,13 @@
             </td>
           </tr>
         </table>
-        <table class="table table-dark">
-          <tr>
-            <th>Compra total</th>
-            <th>$ {{ parseFloat(compraTotal).toFixed(2) }}</th>
-          </tr>
-        </table>
       </div>
+      <table class="table table-dark">
+        <tr>
+          <th>Compra total</th>
+          <th>$ {{ parseFloat(compraTotal).toFixed(2) }}</th>
+        </tr>
+      </table>
       <br />
       <br />
       <br />
@@ -102,6 +100,7 @@ export default {
   mounted() {
     this.getProductos();
     this.pedirDatosAlServidor();
+    this.obtenerProductosDelCarrito();
   },
   data() {
     return {
@@ -127,8 +126,9 @@ export default {
     getTotalCompra() {
       let total = 0;
       this.carrito.forEach((producto) => {
-        return (total += (producto.importe));
+        total += producto.importe;
       });
+      return total;
     },
 
     async enviarDatosAlServidor(carrito) {
@@ -164,8 +164,6 @@ export default {
         importe: this.productos[index].precio * this.formData.cantidad,
         cantidad: this.formData.cantidad,
       };
-      this.compraTotal = this.getTotalCompra();
-      console.log(this.compraTotal)
       console.log(carrito);
       this.enviarDatosAlServidor(carrito);
 
@@ -179,6 +177,7 @@ export default {
         let carrito = respuesta.data;
         console.log("Se obtuvieron los productos correctamente.", carrito);
         this.carrito = carrito;
+        this.compraTotal = this.getTotalCompra();
       } catch (error) {
         console.error(
           "Ocurrió un error y no se pudieron obtener los productos.",

@@ -11,6 +11,7 @@ import {router} from './router'
 import './httpClient'
 import store from './store'
 import './mixin'
+import './filter'
 
 Vue.config.productionTip = false
 

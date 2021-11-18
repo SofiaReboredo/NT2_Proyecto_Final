@@ -14,7 +14,8 @@
         <span v-else>
           {{ calcularUsuariosActivos.cantidad }} de
           {{ calcularUsuariosActivos.total }} usuarios
-          {{ calcularUsuariosActivos.uno ? "está" : "están" }} activos en el sistema.
+          {{ calcularUsuariosActivos.uno ? "está" : "están" }} activos en el
+          sistema.
         </span>
       </h4>
       <button class="btn btn-success mr-2" @click="irACrearUsuario()">
@@ -30,6 +31,9 @@
             <th>Email</th>
             <th>Edad</th>
             <th>Estado</th>
+            <th style="text-align: center; vertical-align: middle">
+              Inactivar/activar
+            </th>
           </tr>
           <tr v-for="(usuario, index) in usuarios" :key="index">
             <td>{{ usuario.nombre }}</td>
@@ -37,6 +41,13 @@
             <td>{{ usuario.email }}</td>
             <td>{{ usuario.edad }}</td>
             <td>{{ usuario.estado ? "Activo" : "Inactivo" }}</td>
+            <td style="text-align: center; vertical-align: middle">
+              <input
+                type="checkbox"
+                v-model="usuario.estado"
+                style="margin-left: auto; margin-right: auto"
+              />
+            </td>
             <button
               class="btn btn-warning mr-3"
               @click="putUsuario(usuario.id)"
@@ -89,6 +100,7 @@
         console.error("Error al obtener usuarios", error);
       }
     },
+
     async putUsuario(id) {
       console.log("putUsuario", id);
 
@@ -113,9 +125,6 @@
       }
     },
 
-    /* --------------------------------------- */
-    /*            DELETE                       */
-    /* --------------------------------------- */
     async deleteUsuario(id) {
       console.log("deleteUsuario", id);
 
