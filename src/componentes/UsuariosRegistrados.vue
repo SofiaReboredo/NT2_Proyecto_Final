@@ -6,10 +6,10 @@
       <br />
       <h4 class="alert alert-secondary">
         <span v-if="calcularUsuariosActivos.ninguno"
-          >Ningun alumno hizo el curso</span
+          >Ningun usuario está activo</span
         >
         <span v-else-if="calcularUsuariosActivos.todos"
-          >Todos los alumnos hicieron el curso</span
+          >Todos los usuarios están activos</span
         >
         <span v-else>
           {{ calcularUsuariosActivos.cantidad }} de
