@@ -164,6 +164,7 @@ export default {
         importe: this.productos[index].precio * this.formData.cantidad,
         cantidad: this.formData.cantidad,
       };
+      this.compraTotal = this.getTotalCompra();
       console.log(carrito);
       this.enviarDatosAlServidor(carrito);
 
